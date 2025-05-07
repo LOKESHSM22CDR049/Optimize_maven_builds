@@ -1,13 +1,14 @@
 package com.optimization.demo;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class AppTest {
 
     @Test
-    public void sampleTest() {
-        assertTrue(true, "This test will always pass");
+    public void testAddition() {
+        int result = 2 + 3;
+        assertEquals(5, result);
     }
 }
 
