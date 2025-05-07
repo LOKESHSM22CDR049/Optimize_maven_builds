@@ -6,9 +6,10 @@ import static org.junit.Assert.assertEquals;
 public class AppTest {
 
     @Test
-    public void testAddition() {
-        int result = 2 + 3;
-        assertEquals(5, result);
+    public void testApp() {
+        int expected = 10;
+        int actual = 5 + 5;
+        assertEquals(expected, actual);
     }
 }
 
