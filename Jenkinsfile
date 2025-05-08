@@ -1,32 +1,40 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven 3.9' // Define in Global Tool Config
+    }
+
+    environment {
+        MAVEN_OPTS = "-Xmx1024m"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Checkout from Git (replace with your repository)
-                git 'https://github.com/yourusername/your-repo.git'
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                // Run Maven Build
-                sh 'mvn clean install -Pproduction -T 4'
+                git credentialsId: 'github-pat', url: 'https://github.com/LOKESHSM22CDR049/Optimize_maven_builds'
             }
         }
 
-        stage('Deploy') {
-            steps {
-                // Execute the jar file (replace the jar name)
-                sh 'java -jar target/your-built-file.jar'
+        stage('Build Modules in Parallel') {
+            parallel {
+                moduleA {
+                    steps {
+                        sh 'mvn -pl module-a clean install'
+                    }
+                }
+                moduleB {
+                    steps {
+                        sh 'mvn -pl module-b clean install'
+                    }
+                }
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Build and deploy complete'
+        stage('Aggregate') {
+            steps {
+                sh 'mvn verify'
+            }
         }
     }
 }
