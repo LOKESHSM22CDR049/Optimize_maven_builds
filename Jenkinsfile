@@ -2,11 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9' // Define in Global Tool Config
-    }
-
-    environment {
-        MAVEN_OPTS = "-Xmx1024m"
+        maven 'Maven 3.9'
     }
 
     stages {
@@ -28,10 +24,15 @@ pipeline {
                         sh 'mvn -pl module-b clean install'
                     }
                 }
+                moduleC {
+                    steps {
+                        sh 'mvn -pl module-c clean install'
+                    }
+                }
             }
         }
 
-        stage('Aggregate') {
+        stage('Verify Build') {
             steps {
                 sh 'mvn verify'
             }
