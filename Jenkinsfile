@@ -12,27 +12,32 @@ pipeline {
             }
         }
 
-        stage('Build Modules in Parallel') {
+        stage('Parallel Build') {
             parallel {
-                moduleA {
+                core {
                     steps {
-                        sh 'mvn -pl module-a clean install'
+                        sh 'mvn -pl core clean install -am -T 2'
                     }
                 }
-                moduleB {
+                api {
                     steps {
-                        sh 'mvn -pl module-b clean install'
+                        sh 'mvn -pl api clean install -am -T 2'
                     }
                 }
-                moduleC {
+                service {
                     steps {
-                        sh 'mvn -pl module-c clean install'
+                        sh 'mvn -pl service clean install -am -T 2'
+                    }
+                }
+                web {
+                    steps {
+                        sh 'mvn -pl web clean install -am -T 2'
                     }
                 }
             }
         }
 
-        stage('Verify Build') {
+        stage('Verify') {
             steps {
                 sh 'mvn verify'
             }
